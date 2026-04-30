@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-header">
+  <h1>Projects</h1>
+  <a href="{% url 'project_create' %}" class="btn-primary">+ New Project</a>
+</div>
+<div class="grid">
+  {% for p in projects %}
+    <div class="card">
+      <h3><a href="{% url 'project_detail' p.pk %}">{{ p.name }}</a></h3>
+      <p>{{ p.description|default:"No description" }}</p>
+      <small>{{ p.tasks.count }} tasks · {{ p.members.count }} members</small>
+    </div>
+  {% empty %}<p>No projects yet. Create one to get started.</p>{% endfor %}
+</div>
+{% endblock %}

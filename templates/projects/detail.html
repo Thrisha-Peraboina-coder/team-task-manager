@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-header">
+  <div><h1>{{ project.name }}</h1><p>{{ project.description }}</p></div>
+  {% if is_admin %}<a href="{% url 'task_create' project.pk %}" class="btn-primary">+ New Task</a>{% endif %}
+</div>
+
+<section class="card">
+  <h2>Tasks</h2>
+  <table class="table">
+    <thead><tr><th>Title</th><th>Assignee</th><th>Status</th><th>Priority</th><th>Due</th><th></th></tr></thead>
+    <tbody>
+    {% for t in tasks %}
+      <tr class="{% if t.is_overdue %}overdue{% endif %}">
+        <td>{{ t.title }}</td>
+        <td>{{ t.assignee.username|default:"—" }}</td>
+        <td><span class="badge status-{{ t.status }}">{{ t.get_status_display }}</span></td>
+        <td>{{ t.get_priority_display }}</td>
+        <td>{{ t.due_date|default:"—" }}</td>
+        <td>
+          <a href="{% url 'task_edit' t.pk %}">Edit</a>
+          {% if is_admin %}
+            <form method="post" action="{% url 'task_delete' t.pk %}" style="display:inline" onsubmit="return confirm('Delete task?')">
+              {% csrf_token %}<button class="btn-link danger">Delete</button>
+            </form>
+          {% endif %}
+        </td>
+      </tr>
+    {% empty %}<tr><td colspan="6">No tasks yet.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="card">
+  <h2>Team Members</h2>
+  <ul class="member-list">
+    {% for m in memberships %}
+      <li>
+        <strong>{{ m.user.username }}</strong>
+        <span class="badge role-{{ m.role }}">{{ m.get_role_display }}</span>
+        {% if is_admin and m.user != project.owner %}
+          <a href="{% url 'remove_member' project.pk m.user.id %}" class="danger">Remove</a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+  {% if is_admin %}
+    <h3>Add Member</h3>
+    <form method="post" class="inline-form">{% csrf_token %}{{ add_form.as_p }}<button class="btn-primary">Add</button></form>
+  {% endif %}
+</section>
+{% endblock %}

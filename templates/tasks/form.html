@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="auth-card">
+<h1>{{ title }}</h1>
+<p>Project: <strong>{{ project.name }}</strong></p>
+<form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn-primary">Save</button>
+<a href="{% url 'project_detail' project.pk %}">Cancel</a></form>
+</div>
+{% endblock %}

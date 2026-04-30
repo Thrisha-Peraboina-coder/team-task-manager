@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+<div class="stats-grid">
+  <div class="stat-card"><div class="stat-num">{{ counts.projects }}</div><div>Projects</div></div>
+  <div class="stat-card"><div class="stat-num">{{ counts.total }}</div><div>My Tasks</div></div>
+  <div class="stat-card"><div class="stat-num">{{ counts.todo }}</div><div>To Do</div></div>
+  <div class="stat-card"><div class="stat-num">{{ counts.in_progress }}</div><div>In Progress</div></div>
+  <div class="stat-card stat-success"><div class="stat-num">{{ counts.done }}</div><div>Done</div></div>
+  <div class="stat-card stat-danger"><div class="stat-num">{{ counts.overdue }}</div><div>Overdue</div></div>
+</div>
+
+{% if overdue_tasks %}
+<section class="card">
+  <h2>⚠️ Overdue Tasks</h2>
+  <ul class="task-list">
+    {% for t in overdue_tasks %}
+      <li class="task-item overdue">
+        <a href="{% url 'task_edit' t.pk %}">{{ t.title }}</a>
+        <span class="badge">{{ t.project.name }}</span>
+        <span class="due">Due {{ t.due_date }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section class="card">
+  <h2>My Upcoming Tasks</h2>
+  {% if my_tasks %}
+  <ul class="task-list">
+    {% for t in my_tasks %}
+      <li class="task-item">
+        <a href="{% url 'task_edit' t.pk %}">{{ t.title }}</a>
+        <span class="badge status-{{ t.status }}">{{ t.get_status_display }}</span>
+        <span class="badge">{{ t.project.name }}</span>
+        {% if t.due_date %}<span class="due">Due {{ t.due_date }}</span>{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}<p>No tasks assigned yet.</p>{% endif %}
+</section>
+
+<section class="card">
+  <h2>My Projects</h2>
+  <a href="{% url 'project_create' %}" class="btn-primary">+ New Project</a>
+  <ul class="project-list">
+    {% for p in projects %}<li><a href="{% url 'project_detail' p.pk %}">{{ p.name }}</a></li>{% endfor %}
+  </ul>
+</section>
+{% endblock %}
