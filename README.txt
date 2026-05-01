@@ -96,15 +96,15 @@ REST API ENDPOINTS
 DEPLOYMENT — RAILWAY
 ----------------------------------------------------------------
   1. Push code to GitHub.
-  2. On https://web-production-b14267.up.railway.app/accounts/login/ -> New Project ->
+  2. On https://railway.app  -> New Project ->
      "Deploy from GitHub repo" -> select your repo.
   3. Add a PostgreSQL plugin (Railway auto-injects
      DATABASE_URL).
   4. Set environment variables in Railway:
         SECRET_KEY            = <a long random string>
         DEBUG                 = False
-        ALLOWED_HOSTS         = .railway.app,.up.railway.app
-        CSRF_TRUSTED_ORIGINS  = https://*.railway.app,https://*.up.railway.app
+        ALLOWED_HOSTS         = web-production-b14267.up.railway.app
+        CSRF_TRUSTED_ORIGINS  = "https://web-production-b14267.up.railway.app"
   5. Deploy. The release command runs migrations
      automatically (see Procfile / railway.json).
   6. Open the generated public URL.
