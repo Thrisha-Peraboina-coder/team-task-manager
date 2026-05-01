@@ -134,13 +134,4 @@ SECURITY NOTES
   - Always change SECRET_KEY and set DEBUG=False in production.
 
 ----------------------------------------------------------------
-SUBMISSION CHECKLIST
-----------------------------------------------------------------
-  [x] Live URL          (Railway deployment)
-  [x] GitHub repo       (push this folder)
-  [x] README.txt        (this file)
-  [ ] 2-5 min demo video (record signup -> project ->
-                          add member -> create task ->
-                          update status -> dashboard)
 
-================================================================
